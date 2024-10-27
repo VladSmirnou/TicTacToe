@@ -7,19 +7,13 @@ export type CellValue = 'X' | 'O' | null;
 
 export const Game = () => {
     const [turn, setTurn] = useState<number>(0);
-    const [winner, setWinner] = useState<CellValue>(null);
     const [boardStatus, setBoardStatus] = useState<Array<Array<CellValue>>>([
         Array.from({ length: 9 }),
     ]);
+
     const currentBoard = boardStatus[turn];
 
-    if (!winner) {
-        const w = calculateWinner(currentBoard);
-        if (w) {
-            setWinner(w);
-            return null;
-        }
-    }
+    const winner = calculateWinner(currentBoard);
 
     const nextPlayer = turn % 2 === 0 ? 'X' : 'O';
 
@@ -42,7 +36,6 @@ export const Game = () => {
 
     const restoreBoard = (turn: number) => {
         setTurn(turn);
-        if (winner) setWinner(null);
     };
 
     const s = {
@@ -62,6 +55,7 @@ export const Game = () => {
             <GameHistory
                 turn={boardStatus.length - 1}
                 onRestoreBoard={restoreBoard}
+                currentHistoryTurn={turn}
             />
         </div>
     );
