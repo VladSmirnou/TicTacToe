@@ -3,13 +3,56 @@ import { Board } from './Board/Board';
 import { GameStatus } from './GameStatus/GameStatus';
 import { GameHistory } from './GameHistory/GameHistory';
 
+function* zip<T>(...arrays: Array<Array<T>>) {
+    for (let i = 0; i < arrays[0].length; i++) {
+        yield arrays.map((el) => el[i]);
+    }
+}
+
 export type CellValue = 'X' | 'O' | null;
+
+type A = {
+    [key: string]: Array<number>;
+};
+
+function getRow(idx: number) {
+    if (idx <= 2) return 1;
+    if (3 <= idx && idx <= 5) return 2;
+    return 3;
+}
+
+function getColumn(idx: number) {
+    if ([0, 3, 6].includes(idx)) return 1;
+    if ([1, 4, 7].includes(idx)) return 2;
+    return 3;
+}
 
 export const Game = () => {
     const [turn, setTurn] = useState<number>(0);
     const [boardStatus, setBoardStatus] = useState<Array<Array<CellValue>>>([
         Array.from({ length: 9 }),
     ]);
+
+    const turnCellCoordinatesMap: A = {
+        0: [],
+    };
+
+    let idx = 0;
+    if (boardStatus.length > 1) {
+        for (let turn = 1; turn < boardStatus.length; turn++) {
+            const first = boardStatus[turn - 1];
+            const second = boardStatus[turn];
+            for (const [fValue, sValue] of zip(first, second)) {
+                if (fValue !== sValue) {
+                    const row = getRow(idx);
+                    const column = getColumn(idx);
+                    turnCellCoordinatesMap[turn] = [row, column];
+                }
+                idx++;
+            }
+            idx = 0;
+        }
+    }
 
     const currentBoard = boardStatus[turn];
 
@@ -69,6 +112,7 @@ export const Game = () => {
                 turn={boardStatus.length - 1}
                 onRestoreBoard={restoreBoard}
                 currentHistoryTurn={turn}
+                turnCellCoordinatesMap={turnCellCoordinatesMap}
             />
         </div>
     );

@@ -5,6 +5,9 @@ type Props = {
     turn: number;
     onRestoreBoard: (turn: number) => void;
     currentHistoryTurn: number;
+    turnCellCoordinatesMap: {
+        [key: string]: Array<number>;
+    };
 };
 
 type SortDirection = 'ascending' | 'descending';
@@ -13,6 +16,7 @@ export const GameHistory = ({
     turn,
     currentHistoryTurn,
     onRestoreBoard,
+    turnCellCoordinatesMap,
 }: Props) => {
     const [sortDirection, setSortDirection] =
         useState<SortDirection>('ascending');
@@ -35,6 +39,7 @@ export const GameHistory = ({
                 turn={finalHistoryTurn}
                 currentHistoryTurn={currentHistoryTurn}
                 onRestoreBoard={onRestoreBoard}
+                cellCoordinates={turnCellCoordinatesMap[finalHistoryTurn]}
             />,
         );
     }
