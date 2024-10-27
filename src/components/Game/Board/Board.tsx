@@ -6,9 +6,14 @@ type Cells = Array<CellValue>;
 type Props = {
     cells: Cells;
     onChangeCellValue: (cellId: number) => void;
+    winSquaresIndexes: Array<number> | null;
 };
 
-export const Board = ({ cells, onChangeCellValue }: Props) => {
+export const Board = ({
+    cells,
+    winSquaresIndexes,
+    onChangeCellValue,
+}: Props) => {
     const jsxCells = cells.map((cell, idx) => {
         return (
             <Cell
@@ -16,6 +21,7 @@ export const Board = ({ cells, onChangeCellValue }: Props) => {
                 cellId={idx}
                 cellValue={cell}
                 onChangeCellValue={onChangeCellValue}
+                winCell={!!winSquaresIndexes?.includes(idx)}
             />
         );
     });

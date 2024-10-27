@@ -13,7 +13,14 @@ export const Game = () => {
 
     const currentBoard = boardStatus[turn];
 
-    const winner = calculateWinner(currentBoard);
+    const result = calculateWinner(currentBoard);
+
+    let winner: string | null = null;
+    let winSquaresIndexes: Array<number> | null = null;
+
+    if (result) {
+        ({ winner, winSquaresIndexes } = result);
+    }
 
     const nextPlayer = turn % 2 === 0 ? 'X' : 'O';
 
@@ -32,7 +39,9 @@ export const Game = () => {
 
     const finalStatus = winner
         ? `The winner is: ${winner}`
-        : `Next player: ${nextPlayer}`;
+        : currentBoard.every((el) => el !== undefined)
+          ? 'Draw!'
+          : `Next player: ${nextPlayer}`;
 
     const restoreBoard = (turn: number) => {
         setTurn(turn);
@@ -51,7 +60,11 @@ export const Game = () => {
     return (
         <div style={s}>
             <GameStatus status={finalStatus} />
-            <Board cells={currentBoard} onChangeCellValue={changeCellValue} />
+            <Board
+                cells={currentBoard}
+                onChangeCellValue={changeCellValue}
+                winSquaresIndexes={winSquaresIndexes}
+            />
             <GameHistory
                 turn={boardStatus.length - 1}
                 onRestoreBoard={restoreBoard}
@@ -79,7 +92,10 @@ function calculateWinner(squares: Array<CellValue>) {
             squares[a] === squares[b] &&
             squares[a] === squares[c]
         ) {
-            return squares[a];
+            return {
+                winner: squares[a],
+                winSquaresIndexes: [a, b, c],
+            };
         }
     }
     return null;
