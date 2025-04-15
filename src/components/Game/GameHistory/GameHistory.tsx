@@ -3,24 +3,14 @@ import { HistorySlot } from './HistorySlot/HistorySlot';
 import { Button } from '@/components/Button/Button';
 
 import styles from './GameHistory.module.css';
-
-type Props = {
-    turn: number;
-    onRestoreBoard: (turn: number) => void;
-    currentHistoryTurn: number;
-    turnCellCoordinatesMap: {
-        [key: string]: Array<number>;
-    };
-};
-
-type SortDirection = 'ascending' | 'descending';
+import type { GameHistoryProps, SortDirection } from './types';
 
 export const GameHistory = ({
     turn,
     currentHistoryTurn,
     onRestoreBoard,
     turnCellCoordinatesMap,
-}: Props) => {
+}: GameHistoryProps) => {
     const [sortDirection, setSortDirection] =
         useState<SortDirection>('ascending');
 
