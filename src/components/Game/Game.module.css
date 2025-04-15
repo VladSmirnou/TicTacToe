@@ -1,7 +1,12 @@
 .history_button {
     justify-self: center;
-    width: 100%;
+}
+
+.restart_game_button,
+.history_button {
     max-width: 250px;
+    min-width: 175px;
+    flex: 1;
 }
 
 .game_wrapper {
@@ -37,13 +42,28 @@
     font-weight: 700;
 }
 
+.buttons_wrapper {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.draw {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 40px;
+    color: green;
+}
+
 @media only screen and (max-width: 768px) {
     .game {
         flex-direction: column;
         align-items: center;
     }
 
-    .history_button {
+    .history_button,
+    .restart_game_button {
         max-width: none;
     }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Board } from './Board/Board';
 import { GameStatus } from './GameStatus/GameStatus';
 import { GameHistory } from './GameHistory/GameHistory';
@@ -31,11 +31,24 @@ function getColumn(idx: number) {
     return 3;
 }
 
+type BoardStatus = Array<Array<CellValue>>;
+
+const getInitialStateData = () => {
+    return {
+        initialTurn: 0,
+        initialBoardStatus: [Array.from({ length: 9 })] as BoardStatus,
+    };
+};
+
 export const Game = () => {
-    const [turn, setTurn] = useState<number>(0);
-    const [boardStatus, setBoardStatus] = useState<Array<Array<CellValue>>>([
-        Array.from({ length: 9 }),
-    ]);
+    const { initialTurn, initialBoardStatus } = useMemo(
+        getInitialStateData,
+        [],
+    );
+
+    const [turn, setTurn] = useState<number>(initialTurn);
+    const [boardStatus, setBoardStatus] =
+        useState<BoardStatus>(initialBoardStatus);
 
     const [showHistory, setShowHistory] = useState<boolean>(false);
 
@@ -86,13 +99,15 @@ export const Game = () => {
         setTurn((prev) => prev + 1);
     };
 
+    const isDraw = currentBoard.every((el) => el !== undefined);
+
     const finalStatus = winner ? (
         <>
             The winner is:{' '}
             <span className={cn(styles.player, styles.winner)}>{winner}</span>
         </>
-    ) : currentBoard.every((el) => el !== undefined) ? (
-        <span>Draw!</span>
+    ) : isDraw ? (
+        <span className={styles.draw}>Draw!</span>
     ) : (
         <>
             Next player:{' '}
@@ -108,6 +123,12 @@ export const Game = () => {
 
     const toggleHistory = () => {
         setShowHistory((p) => !p);
+    };
+
+    const restartGameHandler = () => {
+        setTurn(initialTurn);
+        setBoardStatus(initialBoardStatus);
+        setShowHistory(false);
     };
 
     const toggleHistoryButtonText = !showHistory
@@ -134,9 +155,22 @@ export const Game = () => {
                     />
                 )}
             </div>
-            <Button className={styles.history_button} onClick={toggleHistory}>
-                {toggleHistoryButtonText}
-            </Button>
+            <div className={styles.buttons_wrapper}>
+                {(!!winner || isDraw) && (
+                    <Button
+                        className={styles.restart_game_button}
+                        onClick={restartGameHandler}
+                    >
+                        Restart game
+                    </Button>
+                )}
+                <Button
+                    className={styles.history_button}
+                    onClick={toggleHistory}
+                >
+                    {toggleHistoryButtonText}
+                </Button>
+            </div>
         </div>
     );
 };
