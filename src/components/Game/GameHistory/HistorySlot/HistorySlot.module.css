@@ -1,0 +1,25 @@
+.history_slot:not(:last-of-type) {
+    margin-bottom: 10px;
+}
+
+.history_slot_button {
+    padding: 5px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.go_to_game_start_button {
+    width: max-content;
+}
+
+.selected_slot {
+    font-size: 23px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selected_turn {
+    color: rgb(217, 17, 17);
+}

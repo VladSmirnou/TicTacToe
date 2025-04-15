@@ -1,11 +1,10 @@
+import type { ReactNode } from 'react';
+import styles from './GameStatus.module.css';
+
 type Props = {
-    status: string;
+    status: ReactNode;
 };
 
 export const GameStatus = ({ status }: Props) => {
-    const g = {
-        gridColumn: '1 / 3',
-        marginBottom: '10px',
-    };
-    return <span style={g}>{status}</span>;
+    return <span className={styles.game_status}>{status}</span>;
 };

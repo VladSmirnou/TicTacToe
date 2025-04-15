@@ -1,0 +1,33 @@
+.cell {
+    font-size: 40px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    aspect-ratio: 1;
+}
+
+.cell:hover {
+    background-color: transparent;
+    color: black;
+}
+
+.win_cell,
+.win_cell:hover {
+    color: red;
+}
+
+.left_border,
+.left_border:hover {
+    border-left: 2px solid black;
+}
+
+.top_border,
+.top_border:hover {
+    border-top: 2px solid black;
+}
+
+@media only screen and (max-width: 390px) {
+    .cell {
+        font-size: 35px;
+    }
+}

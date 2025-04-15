@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { HistorySlot } from './HistorySlot/HistorySlot';
+import { Button } from '@/components/Button/Button';
+
+import styles from './GameHistory.module.css';
 
 type Props = {
     turn: number;
@@ -44,18 +47,17 @@ export const GameHistory = ({
         );
     }
 
-    const s = {
-        paddingLeft: '15px',
-    };
-
     return (
-        <div>
-            <button onClick={handleSetSordDirection}>
+        <div className={styles.history}>
+            <Button
+                className={styles.sort_button}
+                onClick={handleSetSordDirection}
+            >
                 sort in{' '}
                 {sortDirection === 'ascending' ? 'descending' : 'ascending'}{' '}
                 order
-            </button>
-            <ol style={s}>{historySlots}</ol>
+            </Button>
+            <ul className={styles.history_stack}>{historySlots}</ul>
         </div>
     );
 };

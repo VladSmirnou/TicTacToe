@@ -1,0 +1,1 @@
+docker container run --rm -it --log-driver none --publish 3000:3000 --mount type=bind,src=$(pwd),dst=/game --name react-tic node-runtime:latest

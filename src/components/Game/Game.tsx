@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Board } from './Board/Board';
 import { GameStatus } from './GameStatus/GameStatus';
 import { GameHistory } from './GameHistory/GameHistory';
+import { Button } from '../Button/Button';
+import cn from 'classnames';
+
+import styles from './Game.module.css';
 
 function* zip<T>(...arrays: Array<Array<T>>) {
     for (let i = 0; i < arrays[0].length; i++) {
@@ -32,6 +36,8 @@ export const Game = () => {
     const [boardStatus, setBoardStatus] = useState<Array<Array<CellValue>>>([
         Array.from({ length: 9 }),
     ]);
+
+    const [showHistory, setShowHistory] = useState<boolean>(false);
 
     const turnCellCoordinatesMap: A = {
         0: [],
@@ -80,40 +86,57 @@ export const Game = () => {
         setTurn((prev) => prev + 1);
     };
 
-    const finalStatus = winner
-        ? `The winner is: ${winner}`
-        : currentBoard.every((el) => el !== undefined)
-          ? 'Draw!'
-          : `Next player: ${nextPlayer}`;
+    const finalStatus = winner ? (
+        <>
+            The winner is:{' '}
+            <span className={cn(styles.player, styles.winner)}>{winner}</span>
+        </>
+    ) : currentBoard.every((el) => el !== undefined) ? (
+        <span>Draw!</span>
+    ) : (
+        <>
+            Next player:{' '}
+            <span className={cn(styles.player, styles.next_player)}>
+                {nextPlayer}
+            </span>
+        </>
+    );
 
     const restoreBoard = (turn: number) => {
         setTurn(turn);
     };
 
-    const s = {
-        width: '100vw',
-        height: '100vh',
-        display: 'grid',
-        gridTemplateColumns: 'auto auto',
-        justifyContent: 'center',
-        alignContent: 'center',
-        columnGap: '15px',
+    const toggleHistory = () => {
+        setShowHistory((p) => !p);
     };
 
+    const toggleHistoryButtonText = !showHistory
+        ? 'Show history'
+        : 'Hide history';
+
     return (
-        <div style={s}>
-            <GameStatus status={finalStatus} />
-            <Board
-                cells={currentBoard}
-                onChangeCellValue={changeCellValue}
-                winSquaresIndexes={winSquaresIndexes}
-            />
-            <GameHistory
-                turn={boardStatus.length - 1}
-                onRestoreBoard={restoreBoard}
-                currentHistoryTurn={turn}
-                turnCellCoordinatesMap={turnCellCoordinatesMap}
-            />
+        <div className={styles.game_wrapper}>
+            <div className={styles.game}>
+                <div className={styles.main_board}>
+                    <GameStatus status={finalStatus} />
+                    <Board
+                        cells={currentBoard}
+                        onChangeCellValue={changeCellValue}
+                        winSquaresIndexes={winSquaresIndexes}
+                    />
+                </div>
+                {showHistory && (
+                    <GameHistory
+                        turn={boardStatus.length - 1}
+                        onRestoreBoard={restoreBoard}
+                        currentHistoryTurn={turn}
+                        turnCellCoordinatesMap={turnCellCoordinatesMap}
+                    />
+                )}
+            </div>
+            <Button className={styles.history_button} onClick={toggleHistory}>
+                {toggleHistoryButtonText}
+            </Button>
         </div>
     );
 };

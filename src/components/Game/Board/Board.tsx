@@ -1,6 +1,8 @@
 import { CellValue } from '../Game';
 import { Cell } from './Cell/Cell';
 
+import styles from './Board.module.css';
+
 type Cells = Array<CellValue>;
 
 type Props = {
@@ -25,10 +27,6 @@ export const Board = ({
             />
         );
     });
-    const s = {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 50px)',
-        gridTemplateRows: 'repeat(3, 50px)',
-    };
-    return <div style={s}>{jsxCells}</div>;
+
+    return <div className={styles.board}>{jsxCells}</div>;
 };

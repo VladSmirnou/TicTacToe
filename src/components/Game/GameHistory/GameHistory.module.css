@@ -1,0 +1,35 @@
+.history {
+    padding: 35px 30px;
+    border-radius: 10px;
+    background-color: rgb(226, 226, 226);
+}
+
+.sort_button {
+    width: 100%;
+}
+
+.history_stack {
+    margin: 15px 0 0;
+}
+
+@media only screen and (max-width: 768px) {
+    .history {
+        padding: 25px 20px;
+        max-height: 250px;
+        overflow: auto;
+    }
+
+    .history::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .history::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+    }
+
+    .history::-webkit-scrollbar-thumb {
+        background: #817f7f;
+        border-radius: 10px;
+    }
+}
