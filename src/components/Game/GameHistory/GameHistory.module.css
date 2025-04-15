@@ -17,6 +17,7 @@
         padding: 25px 20px;
         max-height: 250px;
         overflow: auto;
+        width: 100%;
     }
 
     @supports selector(::-webkit-scrollbar) {
