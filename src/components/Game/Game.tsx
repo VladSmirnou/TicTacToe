@@ -6,16 +6,11 @@ import { Button } from '../Button/Button';
 import cn from 'classnames';
 
 import styles from './Game.module.css';
-import type {
-    BoardStatus,
-    CellValue,
-    Coordinates,
-    ShowHistory,
-    Turn,
-} from './types';
+import type { BoardStatus, Coordinates, ShowHistory, Turn } from './types';
 import { zip, getRow, getColumn } from './utils/boardHelpers';
 import { getInitialStateData } from './utils/getInitialData';
 import type { Nullable } from '@/shared/types/types';
+import { calculateWinner } from './utils/calculateWinner';
 
 export const Game = () => {
     const { initialTurn, initialBoardStatus, initialShowHistory } = useMemo(
@@ -152,30 +147,3 @@ export const Game = () => {
         </div>
     );
 };
-
-function calculateWinner(squares: Array<CellValue>) {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (
-            squares[a] &&
-            squares[a] === squares[b] &&
-            squares[a] === squares[c]
-        ) {
-            return {
-                winner: squares[a],
-                winSquaresIndexes: [a, b, c],
-            };
-        }
-    }
-    return null;
-}
