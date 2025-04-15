@@ -19,17 +19,28 @@
         overflow: auto;
     }
 
-    .history::-webkit-scrollbar {
-        width: 8px;
+    @supports selector(::-webkit-scrollbar) {
+        .history::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        .history::-webkit-scrollbar-thumb {
+            background: #817f7f;
+            border-radius: 10px;
+        }
     }
 
-    .history::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 10px;
-    }
-
-    .history::-webkit-scrollbar-thumb {
-        background: #817f7f;
-        border-radius: 10px;
+    @supports not selector(::-webkit-scrollbar) {
+        @supports (scrollbar-color: auto) {
+            .history {
+                scrollbar-color: #817f7f transparent;
+                scrollbar-width: 8px;
+            }
+        }
     }
 }

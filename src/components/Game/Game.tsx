@@ -6,53 +6,31 @@ import { Button } from '../Button/Button';
 import cn from 'classnames';
 
 import styles from './Game.module.css';
-
-function* zip<T>(...arrays: Array<Array<T>>) {
-    for (let i = 0; i < arrays[0].length; i++) {
-        yield arrays.map((el) => el[i]);
-    }
-}
-
-export type CellValue = 'X' | 'O' | null;
-
-type A = {
-    [key: string]: Array<number>;
-};
-
-function getRow(idx: number) {
-    if (idx <= 2) return 1;
-    if (3 <= idx && idx <= 5) return 2;
-    return 3;
-}
-
-function getColumn(idx: number) {
-    if ([0, 3, 6].includes(idx)) return 1;
-    if ([1, 4, 7].includes(idx)) return 2;
-    return 3;
-}
-
-type BoardStatus = Array<Array<CellValue>>;
-
-const getInitialStateData = () => {
-    return {
-        initialTurn: 0,
-        initialBoardStatus: [Array.from({ length: 9 })] as BoardStatus,
-    };
-};
+import type {
+    BoardStatus,
+    CellValue,
+    Coordinates,
+    ShowHistory,
+    Turn,
+} from './types';
+import { zip, getRow, getColumn } from './utils/boardHelpers';
+import { getInitialStateData } from './utils/getInitialData';
+import type { Nullable } from '@/shared/types/types';
 
 export const Game = () => {
-    const { initialTurn, initialBoardStatus } = useMemo(
+    const { initialTurn, initialBoardStatus, initialShowHistory } = useMemo(
         getInitialStateData,
         [],
     );
 
-    const [turn, setTurn] = useState<number>(initialTurn);
+    const [turn, setTurn] = useState<Turn>(initialTurn);
     const [boardStatus, setBoardStatus] =
         useState<BoardStatus>(initialBoardStatus);
 
-    const [showHistory, setShowHistory] = useState<boolean>(false);
+    const [showHistory, setShowHistory] =
+        useState<ShowHistory>(initialShowHistory);
 
-    const turnCellCoordinatesMap: A = {
+    const turnCellCoordinatesMap: Coordinates = {
         0: [],
     };
 
@@ -77,8 +55,8 @@ export const Game = () => {
 
     const result = calculateWinner(currentBoard);
 
-    let winner: string | null = null;
-    let winSquaresIndexes: Array<number> | null = null;
+    let winner: Nullable<string> = null;
+    let winSquaresIndexes: Nullable<Array<number>> = null;
 
     if (result) {
         ({ winner, winSquaresIndexes } = result);
@@ -128,7 +106,7 @@ export const Game = () => {
     const restartGameHandler = () => {
         setTurn(initialTurn);
         setBoardStatus(initialBoardStatus);
-        setShowHistory(false);
+        setShowHistory(initialShowHistory);
     };
 
     const toggleHistoryButtonText = !showHistory

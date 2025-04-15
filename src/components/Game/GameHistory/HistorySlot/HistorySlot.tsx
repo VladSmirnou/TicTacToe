@@ -2,20 +2,14 @@ import { Button } from '@/components/Button/Button';
 
 import cn from 'classnames';
 import styles from './HistorySlot.module.css';
-
-type Props = {
-    turn: number;
-    onRestoreBoard: (turn: number) => void;
-    currentHistoryTurn: number;
-    cellCoordinates: Array<number>;
-};
+import type { HistorySlotProps } from './types';
 
 export const HistorySlot = ({
     turn,
     currentHistoryTurn,
     onRestoreBoard,
     cellCoordinates,
-}: Props) => {
+}: HistorySlotProps) => {
     const handleResotreBoard = () => {
         onRestoreBoard(turn);
     };

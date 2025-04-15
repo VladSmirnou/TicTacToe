@@ -1,22 +1,15 @@
-import { CellValue } from '@/components/Game/Game';
 import { Button } from '@/components/Button/Button';
 
 import cn from 'classnames';
 import styles from './Cell.module.css';
-
-type Props = {
-    cellValue: CellValue;
-    onChangeCellValue: (cellId: number) => void;
-    cellId: number;
-    winCell: boolean;
-};
+import type { CellProps } from './types';
 
 export const Cell = ({
     cellValue,
     onChangeCellValue,
     cellId,
     winCell,
-}: Props) => {
+}: CellProps) => {
     const handleOnChangeCellValue = () => {
         onChangeCellValue(cellId);
     };

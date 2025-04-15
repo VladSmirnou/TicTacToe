@@ -1,10 +1,6 @@
-import type { ReactNode } from 'react';
 import styles from './GameStatus.module.css';
+import type { GameStatusProps } from './types';
 
-type Props = {
-    status: ReactNode;
-};
-
-export const GameStatus = ({ status }: Props) => {
+export const GameStatus = ({ status }: GameStatusProps) => {
     return <span className={styles.game_status}>{status}</span>;
 };
